@@ -1,0 +1,48 @@
+import Card from "./Card";
+import React, { useState } from 'react'
+
+const Cards = (props) => {
+    console.log(props.category);
+    console.log(props.courses);
+
+    let category = props.category;
+    const [likedCourses, setLikedCourses] = useState([]);
+
+    function getCourses() {
+        if (category === "All") {
+            let allCourses = [];
+            Object.values(props.courses).forEach((array) => {
+                array.forEach((courseData) => {
+                    allCourses.push(courseData);
+                });
+            });
+            return allCourses;
+        } else {
+            return props.courses[category];
+        }
+    }
+    
+    console.log("Courses:", getCourses());
+    
+    return (
+        <div className="flex flex-wrap justify-center gap-4 mb-4">
+            {
+                getCourses() ? (
+                    getCourses().map((course) => (
+                        <Card
+                            course={course}
+                            key={course.id}
+                            likedCourses={likedCourses}
+                            setLikedCourses={setLikedCourses}
+                        />
+                    ))
+                ) : (
+                    <p>No courses available for the selected category.</p>
+                )
+            }
+        </div>
+    );
+    
+};
+
+export default Cards;
